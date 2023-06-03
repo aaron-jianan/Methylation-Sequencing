@@ -1,0 +1,131 @@
+
+library(adabag)
+library(pROC)
+
+load(file = "Remove the high-level raw data.Rdata")
+##ra/non_RA
+set.seed(1)
+index <- sample(2,301,replace = TRUE,prob=c(0.7,0.3))
+traindata <- rawdata_new[index==1,]
+testdata <- rawdata_new[index==2,]
+
+library(caret)
+fitControl <- trainControl(
+  method = 'cv',                   
+  number = 5,                      
+  savePredictions = 'final',       
+  classProbs = F,                  
+  summaryFunction=defaultSummary  
+) 
+
+model_adaboost = train(group ~ ., 
+                       data=traindata, 
+                       method='adaboost', 
+                       tuneLength=2 ,
+                       trControl = fitControl)
+model_adaboost
+
+m_adaboost <- predict(model_adaboost,newdata = testdata)
+confusionMatrix(reference=testdata$group,data=m_adaboost)
+library(pROC)
+
+probs_adaboost <- predict(model_adaboost, newdata = testdata, type = "prob")
+
+auc_adaboost <- roc(testdata$group, probs_adaboost[,2])$auc
+auc_adaboost
+
+
+##Double Negative RA
+set.seed(123)
+index <- sample(2,71,replace = TRUE,prob=c(0.7,0.3))
+methythlation_exp_RA_RF_CCP_doulenegtive=methythlation_exp_RA_RF_CCP_doulenegtive[,-(35:36)]
+traindata <- methythlation_exp_RA_RF_CCP_doulenegtive[index==1,]
+testdata <- methythlation_exp_RA_RF_CCP_doulenegtive[index==2,]
+
+model_adaboost = train(group ~ ., 
+                       data=traindata, 
+                       method='adaboost', 
+                       tuneLength=2 ,
+                       trControl = fitControl)
+model_adaboost
+
+m_adaboost <- predict(model_adaboost,newdata = testdata)
+confusionMatrix(reference=testdata$group,data=m_adaboost)
+library(pROC)
+
+probs_adaboost <- predict(model_adaboost, newdata = testdata, type = "prob")
+
+auc_adaboost <- roc(testdata$group, probs_adaboost[,2])$auc
+auc_adaboost
+
+##Double positive RA
+set.seed(1234)
+index <- sample(2,238,replace = TRUE,prob=c(0.7,0.3))
+methythlation_exp_RA_RF_CCP_doulepostive=methythlation_exp_RA_RF_CCP_doulepostive[,-(35:36)]
+traindata <- methythlation_exp_RA_RF_CCP_doulepostive[index==1,]
+testdata <- methythlation_exp_RA_RF_CCP_doulepostive[index==2,]
+model_adaboost = train(group ~ ., 
+                       data=traindata, 
+                       method='adaboost', 
+                       tuneLength=2 ,
+                       trControl = fitControl)
+model_adaboost
+
+m_adaboost <- predict(model_adaboost,newdata = testdata)
+confusionMatrix(reference=testdata$group,data=m_adaboost)
+library(pROC)
+
+probs_adaboost <- predict(model_adaboost, newdata = testdata, type = "prob")
+
+auc_adaboost <- roc(testdata$group, probs_adaboost[,2])$auc
+auc_adaboost
+
+##RF single negative
+
+set.seed(12)
+index <- sample(2,84,replace = TRUE,prob=c(0.7,0.3))
+methythlation_exp_RA_RF_negtive=methythlation_exp_RA_RF_negtive[,-(35:36)]
+traindata <- methythlation_exp_RA_RF_negtive[index==1,]
+testdata <- methythlation_exp_RA_RF_negtive[index==2,]
+
+model_adaboost = train(group ~ ., 
+                       data=traindata, 
+                       method='adaboost', 
+                       tuneLength=2 ,
+                       trControl = fitControl)
+model_adaboost
+
+m_adaboost <- predict(model_adaboost,newdata = testdata)
+confusionMatrix(reference=testdata$group,data=m_adaboost)
+library(pROC)
+
+probs_adaboost <- predict(model_adaboost, newdata = testdata, type = "prob")
+
+auc_adaboost <- roc(testdata$group, probs_adaboost[,2])$auc
+auc_adaboost
+
+##CCP single negative
+
+set.seed(45754)
+index <- sample(2,68,replace = TRUE,prob=c(0.7,0.3))
+methythlation_exp_RA_CCP_negtive=methythlation_exp_RA_CCP_negtive[,-(35:36)]
+traindata <- methythlation_exp_RA_CCP_negtive[index==1,]
+testdata <- methythlation_exp_RA_CCP_negtive[index==2,]
+model_adaboost = train(group ~ ., 
+                       data=traindata, 
+                       method='adaboost', 
+                       tuneLength=2 ,
+                       trControl = fitControl)
+model_adaboost
+
+m_adaboost <- predict(model_adaboost,newdata = testdata)
+confusionMatrix(reference=testdata$group,data=m_adaboost)
+library(pROC)
+
+probs_adaboost <- predict(model_adaboost, newdata = testdata, type = "prob")
+
+auc_adaboost <- roc(testdata$group, probs_adaboost[,2])$auc
+auc_adaboost
+
+
+
