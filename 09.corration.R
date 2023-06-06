@@ -16,6 +16,7 @@ as_numeric_data_frame<- function(.dta,colname=''){
 cor_exp=as_numeric_data_frame(.dta=cor_exp,colname=colnames(cor_exp))
 colnames(cor_exp)
 cor_exp=cor_exp[,c(30,22,8,2,33,27,6,18,3,17,28,14,19,10,5,34:47)]
+cor_exp=cor_exp[1:241,]
 cor_exp1=round(cor(cor_exp,use ="na.or.complete",method = c("spearman")),3)
 
 library(Hmisc)
